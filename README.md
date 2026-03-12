@@ -1,6 +1,6 @@
 # Email Micro-Service
 ## Overview
-This repository contains QA documentation for testing the Email Micro-Service.
+This repository contains QA documentation and processes for testing the Email Micro-Service.
 
 Contents include:
 
