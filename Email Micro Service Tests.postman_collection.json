@@ -1,0 +1,197 @@
+{
+  "info": {
+    "_postman_id": "b601ea3a-7b6e-4a18-9b81-21c86668fae3",
+    "name": "Email Micro Service Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "18622517",
+    "_collection_link": "https://go.postman.co/collection/18622517-b601ea3a-7b6e-4a18-9b81-21c86668fae3?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Welcome Message",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 202 Accepted\", function () {\r",
+              "    pm.response.to.have.status(202);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response contains Welcome message\", function () {\r",
+              "    const response = pm.response.json();\r",
+              "    pm.expect(response).to.have.property(\"status\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"to\": \"user@example.com\",\r\n    \"subject\": \"Welcome!\",\r\n    \"body\": \"Thanks for signing up.\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.example.com/send-email",
+          "protocol": "https",
+          "host": [
+            "api",
+            "example",
+            "com"
+          ],
+          "path": [
+            "send-email"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Missing Email",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 422\", function () {\r",
+              "    pm.response.to.have.status(422);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validation error for missing email\", function () {\r",
+              "    const response = pm.response.json();\r",
+              "    pm.expect(response.message).to.include(\"to\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"subject\": \"Welcome!\",\r\n    \"body\": \"Thanks for signing up.\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.example.com/send-email",
+          "protocol": "https",
+          "host": [
+            "api",
+            "example",
+            "com"
+          ],
+          "path": [
+            "send-email"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Invalid Email",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 422 for invalid email\", function () {\r",
+              "    pm.response.to.have.status(422);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response indicates invalid email format\", function () {\r",
+              "    const response = pm.response.json();\r",
+              "    pm.expect(response.message).to.include(\"invalid\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"to\": \"user@.com\",\r\n  \"subject\": \"Welcome!\",\r\n  \"body\": \"Thanks for signing up.\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.example.com/send-email",
+          "protocol": "https",
+          "host": [
+            "api",
+            "example",
+            "com"
+          ],
+          "path": [
+            "send-email"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Full Queue",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 503 when queue is full\", function () {\r",
+              "    pm.response.to.have.status(503);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"to\": \"user@example.com\",\r\n  \"subject\": \"Queue Test\",\r\n  \"body\": \"Testing queue capacity\"\r\n}"
+        },
+        "url": {
+          "raw": "https://api.example.com/send-email",
+          "protocol": "https",
+          "host": [
+            "api",
+            "example",
+            "com"
+          ],
+          "path": [
+            "send-email"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
